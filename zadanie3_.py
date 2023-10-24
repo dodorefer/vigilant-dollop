@@ -1,60 +1,75 @@
-from queue import Queue //
+from queue import Queue # код реализует структуру данных бинарного дерева с методами вставки, обхода и анализа узлов.
 
 queue = Queue()
 
 
-class Node:
-    def __init__(self, data):
+class Node: # определяем класс node, который представляет узел в дереве
+    def __init__(self, data): 
+        # Метод __init__ инициализирует узел с заданными данными и устанавливает все атрибуты в значения по умолчанию
+        # Узел имеет атрибуты leftChild, rightChild, data и parent //
         self.leftChild = None
         self.rightChild = None
         self.data = data
         self.parent = None
 
+  
+  #  1. Описать процедуру или функцию, которая:
+  # a) присваивает параметру Е запись из самого левого листа непустого дерева Т (листвершина, из которого не выходит ни одной ветви);
+  # b) определяет число вхождений записи Е в дерево Т.
     # Insert Node
-    def insert(self, data):
+    def insert(self, data): # Метод insert используется для вставки нового узла в дерево. 
+    # Он рекурсивно проходит по дереву, сравнивая значение нового узла с текущим узлом. 
         if data >= self.data:
-            if self.rightChild:
+            if self.rightChild: # Если значение больше или равно текущему узлу, оно добавляется в правое поддерево.
                 self.rightChild.insert(data)
             else:
-                self.rightChild = Node(data)
+                self.rightChild = Node(data) # Если правое поддерево уже существует, метод рекурсивно вызывается для этого поддерева.
                 self.rightChild.parent = self
         else:
-            if self.leftChild:
+            if self.leftChild: # Если значение меньше текущего узла, оно добавляется в левое поддерево.
                 self.leftChild.insert(data)
             else:
-                self.leftChild = Node(data)
+                self.leftChild = Node(data) # Если левое поддерево уже существует, метод рекурсивно вызывается для этого поддерева.
                 self.leftChild.parent = self
 
-    def preorderTraversal(self, root):
+    def preorderTraversal(self, root): # Метод preorderTraversal выполняет обход дерева в прямом порядке.
         ret = []
-        if root:
+        if root:  # Он использует рекурсию и добавляет значения узлов в список ret в порядке: 
+        # левый поддерево, корень, правое поддерево. В конце возвращает список ret.
+            
             ret = ret + self.preorderTraversal(root.leftChild)
             ret.append(root.data)
             ret = ret + self.preorderTraversal(root.rightChild)
         return ret
 
-    def get_type(self, root):
+# #возвращает список кортежей, где каждый кортеж содержит значение узла и строку, указывающую тип узла
+# «К» для корневого узла, «Л» для конечного узла и «П» для конечного узла
+    def get_type(self, root): # Метод get_type также выполняет рекурсивный обход дерева. 
         ret = []
         if root:
-            ret = ret + self.get_type(root.leftChild)
+            ret = ret + self.get_type(root.leftChild) # Он использует рекурсию и добавляет в список ret типы узлов: 
+            // 'П' (предок), 'К' (корень) или 'Л' (лист). 
             if root.parent and (root.leftChild or root.rightChild):
                 ret.append([root.data, 'П'])
             elif root.parent is None:
                 ret.append([root.data, 'К'])
             else:
                 ret.append([root.data, 'Л'])
-            ret = ret + self.get_type(root.rightChild)
+            ret = ret + self.get_type(root.rightChild) # Тип узла определяется наличием родительского узла и наличием потомков. 
+            # В конце возвращает список ret.
         return ret
 
 
-def getLevelUtil(node, data, level):
-    if (node == None):
+def getLevelUtil(node, data, level): # Функция getLevelUtil используется для определения уровня узла в дереве.
+    # Она использует рекурсию и проверяет каждый узел дерева в поиске заданного значения.
+    if (node == None): 
         return 0
 
-    if (node.data == data):
+    if (node.data == data): # Если значение найдено, функция возвращает уровень этого узла.
         return level
 
-    downlevel = getLevelUtil(node.leftChild, data, level + 1)
+    downlevel = getLevelUtil(node.leftChild, data, level + 1) # Если значение не найдено, 
+     # функция рекурсивно вызывается для левого и правого поддеревьев. 
     if (downlevel != 0):
         return downlevel
 
@@ -62,18 +77,22 @@ def getLevelUtil(node, data, level):
     return downlevel
 
 
-def getLevel(node, data):
+def getLevel(node, data): # Функция getLevel просто вызывает функцию getLevelUtil, передавая в нее корень дерева и заданное значение.
     return getLevelUtil(node, data, 1)
 
 
-def height(node):
-    if node is None:
+def height(node): # Функция height используется для определения высоты дерева. Она также использует рекурсию. 
+    if node is None: # Если узел не существует (равен None), функция возвращает 0.
         return 0
     else:
-        return max(height(node.leftChild), height(node.rightChild)) + 1
+        return max(height(node.leftChild), height(node.rightChild)) + 1 # Иначе функция рекурсивно вызывается для левого 
+       # и правого поддеревьев и возвращает максимальное значение из двух высот, увеличенное на 1.
 
 
-root = Node(27)
+root = Node(27) # Затем создается корневой узел дерева с значением 27 и выполняются повторные вставки для добавления других узлов в дерево.
+# Затем он выполняет различные операции с деревом, такие как поиск наиболее распространенных и наименее 
+# распространенных значений узлов, вставка нового узла с заданным значением и копирование дерева.
+
 root.insert(14)
 root.insert(5)
 root.insert(-10)
@@ -119,7 +138,7 @@ print('10)', max(root.preorderTraversal(root)))
 root.insert(max(root.preorderTraversal(root)))
 print(root.preorderTraversal(root))
 
-# Описать процедуру или функцию, которая:
+# 11 Описать процедуру или функцию, которая:
 # а) вставляет узел с записью Е в дерево, если ранее такой не было;
 # b) считает и выдает на экран сумму значений всех ключей, если такая запись есть.
 if 5 in root.preorderTraversal(root):
