@@ -110,7 +110,7 @@ for i in range(len(arr)):
 #else:
     #print("8. Нет элементов со значением", elem)
 
-# 9 
+# 9 находит в массиве максим элементов 
 max_num = 0
 for num in arr:
     if num % 10 == 0 and num > max_num:
