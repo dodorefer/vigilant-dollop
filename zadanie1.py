@@ -1,85 +1,64 @@
-from queue import Queue
+stack = [1, 2, 3, 4, 5]
 
-def swap_first_and_last(s): // поменять местами первый и последний элементы стека
-    if len(s) == 0:
-        return
-    last = s[-1]
-    s.pop()
-    if len(s) == 0:
-        s.append(last)
-        return
-    first = s[-1]
-    s.pop()
-    s.append(last)
-    while len(s) > 0:
-        temp = s[-1]
-        s.pop()
-        if len(s) == 0:
-            s.append(first)
-            s.append(temp)
-        else:
-            s.append(temp)
+stack = list(map(str, stack))
 
-def remove_middle(s): // удалить элемент, находящийся в середине стека
-    if len(s) == 0:
-        return
-    size = len(s)
-    middle = size // 2
-    if size % 2 == 0:
-        middle -= 1
-    temp = []
-    for i in range(size):
-        if i == middle:
-            s.pop()
-        else:
-            temp.append(s[-1])
-            s.pop()
-    while len(temp) > 0:
-        s.append(temp[-1])
-        temp.pop()
+# 1. Поменять местами первый и последний элементы стека
+stack[0], stack[-1] = stack[-1], stack[0]
+print(stack)  
 
-def remove_every_second(s): // удаляем каждый второй элемент стека
-    size = len(s)
-    for i in range(1, size + 1):
-        if i % 2 == 0:
-            s.pop()
+# 2. Развернуть стек
+stack.reverse()
+print(stack)  
 
-def search_min_zero(s): //  Находим минимальный элемент и вставляем 0
-    minElement = s[-1]
-    while len(s) > 0:
-        if s[-1] < minElement:
-            minElement = s[-1]
-        s.pop()
-        
-s.append(minElement)
-s.append("0")
+# 3. Удалить элемент в середине стека
+if len(stack) % 2 == 0:
+    del stack[len(stack) // 2 - 1: len(stack) // 2 + 1]
+else:
+    del stack[len(stack) // 2]
+print(stack) 
 
-def search_max_zero(s): // Находим максимальный элемент и вставляем 0
-    maxElement = s[-1]
-    while len(s) > 0:
-        if s[-1] > maxElement:
-            maxElement = s[-1]
-        s.pop()
-    s.append(maxElement)
-    s.append("0")
+# 4. Удалить каждый второй элемент стека
+del stack[1::2]
+print(stack)  
 
-def delete_min(s): //  удаляем минимальный элемент
-    minElement = s[-1]
-    tempStack = []
-    while len(s) > 0:
-        if s[-1] < minElement:
-            minElement = s[-1]
-        tempStack.append(s[-1])
-        s.pop()
+# 5. Вставить символ ‘*’ в середину стека
+if len(stack) % 2 == 0:
+    stack.insert(len(stack) // 2, '*')
+print(stack)  
 
-def delete_pervomu(s): //  удаляем элементы, равные первому
-    tempStack = []
-    tempStack.append(s[-1])
-    s.pop()
-    while len(s) > 0:
-        if s[-1] != tempStack[-1]:
-            tempStack.append(s[-1])
-        s.pop()
-    while len(tempStack) > 0:
-        s.append(tempStack[-1])
-        tempStack.pop()
+# 6. Найти минимальный элемент и вставить после него 0
+min_index = stack.index(min(stack))
+stack.insert(min_index + 1, 0)
+print(stack)  
+
+stack = list(map(str, stack))
+
+# 7. Найти максимальный элемент и вставить после него 0
+max_index = stack.index(max(stack))
+stack.insert(max_index + 1, 0)
+print(stack)  
+
+stack = list(map(str, stack))
+
+# 8. Удалить минимальный элемент
+stack.remove(min(stack))
+print(stack)  
+
+# 9. Удалить все элементы, равные первому
+stack = [x for x in stack if x != stack[0]]
+print(stack)  # [0, 2, 5, 0]
+
+# 10. Удалить все элементы, равные последнему
+stack = [x for x in stack if x != stack[-1]]
+print(stack)  # [2]
+
+# 11. Удалить максимальный элемент
+stack.remove(max(stack))
+print(stack)  # [2]
+
+stack = [1, 2, 3, 4, 5]
+
+# 12. Найти минимальный элемент и вставить на его место 0
+min_index = stack.index(min(stack))
+stack[min_index] = 0
+print(stack)  # [0]
